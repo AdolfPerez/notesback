@@ -5,31 +5,24 @@ if (process.argv.length < 3) {
   process.exit(1)
 }
 
-const password = process.argv[2]
+mongoose.connect(`mongodb+srv://Adolfo:${process.argv[2]}@cluster0.8ym4v.mongodb.net/note-app?retryWrites=true&w=majority`)
 
-const url =
-  `mongodb+srv://Adolfo:${password}@cluster0.8ym4v.mongodb.net/note-app?retryWrites=true&w=majority`
-
-mongoose.connect(url)
-
-const noteSchema = new mongoose.Schema({
+const Note = mongoose.model('Note', new mongoose.Schema({
   content: String,
   date: Date,
   important: Boolean,
-})
-
-const Note = mongoose.model('Note', noteSchema)
+}))
 
 const note = new Note({
-  content: 'Js 3',
+  content: 'CSS 2',
   date: new Date(),
   important: true,
 })
 
-/*note.save().then(result => {
+note.save().then(result => {
   console.log('note saved!')
   mongoose.connection.close()
-})*/
+})
 
 Note.find({}).then(result => {
   result.forEach(note => {
